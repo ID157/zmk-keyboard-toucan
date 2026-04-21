@@ -2,14 +2,16 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <input/processors.dtsi>
 
 #define BASE 0
 #define NAV  1
 #define SYM  2
 #define ADJ  3
+#define CON  4
+#define XLS  5
 
 / {
-
     behaviors {
         hm: homerow_mods {
             compatible = "zmk,behavior-hold-tap";
@@ -20,6 +22,63 @@
             flavor = "balanced";
             bindings = <&kp>, <&kp>;
         };
+
+        td_nav_con: tap_dance_nav_con {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&mo NAV>, <&to CON>;
+        };
+
+        td_nav_con: tap_dance_nav_con {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&mo NAV>, <&to CON>;
+        };
+
+        td_sym_xls: tap_dance_sym_xls {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&mo SYM>, <&to XLS>;
+        };
+    };
+
+    macros {
+        con_bt0: con_bt0 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 0>, <&to BASE>;
+        };
+        con_bt1: con_bt1 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 1>, <&to BASE>;
+        };
+        con_bt2: con_bt2 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 2>, <&to BASE>;
+        };
+        con_bt3: con_bt3 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 3>, <&to BASE>;
+        };
+        con_bt4: con_bt4 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 4>, <&to BASE>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
     };
 
     keymap {
@@ -27,53 +86,86 @@
 
         base {
             display-name = "BASE";
-            bindings = <
+            bindings = 
                 &kp LANG_ZENKAKUHANKAKU &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp TAB &hm LCTRL A &hm LALT S  &hm LGUI D  &hm LSHFT F &kp G   &kp H &hm RSHFT J  &hm RGUI K  &hm RALT L  &hm RCTRL SEMI &kp SQT
+                &kp TAB &hm LCTRL A &hm LALT S &hm LGUI D &hm LSHFT F &kp G   &kp H &hm RSHFT J &hm RGUI K &hm RALT L &hm RCTRL SEMI &kp SQT
                 &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                                &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
+                                &kp LGUI &td_nav_con &kp SPACE   &kp RET &td_sym_xls &kp RALT
             >;
         };
 
         nav {
             display-name = "NAV";
-            bindings = <
-                &kp LCTRL     &kp N1          &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-                &kp TAB  &bt BT_SEL 0    &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-                &kp LSHFT   &studio_unlock  &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                                                &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
+            bindings = 
+                &kp LCTRL  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5    &kp N6   &kp N7   &kp N8  &kp N9    &kp N0  &kp BSPC
+                &kp TAB    &trans  &trans  &trans  &trans  &trans    &kp LEFT &kp DOWN &kp UP  &kp RIGHT &trans  &trans
+                &kp LSHFT  &trans  &trans  &trans  &trans  &trans    &trans   &trans   &trans  &trans    &trans  &trans
+                                   &kp LGUI &trans &kp SPACE   &kp RET &trans &kp RALT
             >;
         };
 
         sym {
             display-name = "SYM";
-            bindings = <
-                &kp LCTRL   &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
-                &kp TAB &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-                &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                                          &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+            bindings = 
+                &kp LCTRL  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
+                &kp TAB    &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
+                &kp LSHFT  &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
+                                           &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
             >;
         };
 
         adj {
             display-name = "ADJ";
-            bindings = <
-                &kp LCTRL   &trans &kp F7 &kp F8 &kp F9 &kp F12   &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans &trans &kp BSPC
-                &kp TAB &trans &kp F4 &kp F5 &kp F6 &kp F11   &trans       &trans      &trans       &trans &trans &trans
-                &kp LSHFT &trans &kp F1 &kp F2 &kp F3 &kp F10   &trans       &trans      &trans       &trans &trans &trans
-                                   &kp LGUI &mo NAV &kp SPACE   &kp RET &mo 2 &kp RALT
+            bindings = 
+                &kp LCTRL  &trans &kp F7 &kp F8 &kp F9 &kp F12   &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans &trans &kp BSPC
+                &kp TAB    &trans &kp F4 &kp F5 &kp F6 &kp F11   &trans       &trans      &trans       &trans &trans &trans
+                &kp LSHFT  &trans &kp F1 &kp F2 &kp F3 &kp F10   &trans       &trans      &trans       &trans &trans &trans
+                                   &kp LGUI &mo NAV &kp SPACE   &kp RET &mo SYM &kp RALT
             >;
         };
+
+        con {
+            display-name = "CON";
+            bindings = 
+                &to BASE  &con_bt0       &con_bt1 &con_bt2 &con_bt3 &con_bt4   &trans &trans &trans &trans &trans &bt BT_CLR_ALL
+                &to BASE  &trans         &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
+                &trans    &studio_unlock &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
+                                         &to BASE &trans   &trans   &trans     &trans &to BASE
+            >;
+        };
+
+        xls {
+            display-name = "XLS";
+            bindings = 
+                &to BASE  &kp LG(Z)         &kp LG(LS(Z))    &kp LG(C)      &kp LG(V)      &kp LG(X)         &kp LG(B)  &kp LG(I)  &kp LG(U)  &kp LG(N1)        &kp F2   &kp BSPC
+                &kp TAB   &kp LC(D)          &kp LC(R)        &kp LC(HOME)   &kp LG(LS(L))  &kp LG(LS(T))     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT         &kp RET  &kp SQT
+                &kp LSHFT &kp LG(LS(EQUAL))  &kp LG(MINUS)   &trans         &trans         &trans            &trans     &trans     &kp COMMA  &kp DOT           &trans   &kp ESC
+                                              &kp LGUI &trans &kp SPACE   &kp RET &to BASE &kp RALT
+            >;
+        };
+
         extra_1 {
-                status = "reserved";
+            status = "reserved";
         };
 
         extra_2 {
-                status = "reserved";
+            status = "reserved";
         };
 
         extra_3 {
-                status = "reserved";
+            status = "reserved";
+        };
+    };
+
+    pointing_input_listener: pointing_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&glidepoint>;  // Toucanの場合のtrackpadノード名
+
+        nav_config {
+            layers = <NAV>;  // NAVレイヤーの番号に合わせて
+            input-processors =
+                <&zip_scroll_scaler 1 2>,  // 分母を大きくするほど遅くなります
+                <&zip_tap_to_key RCLK>;
         };
     };
 };
