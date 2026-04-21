@@ -43,6 +43,14 @@
             tapping-term-ms = <200>;
             bindings = <&mo SYM>, <&to XLS>;
         };
+
+        td_h_rclk: td_h_rclk {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp H>, <&mkp RCLK>;
+            //          1回タップ  2回タップ
+        };
     };
 
     macros {
@@ -88,7 +96,7 @@
             display-name = "BASE";
             bindings = 
                 &kp LANG_ZENKAKUHANKAKU &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp TAB &hm LCTRL A &hm LALT S &hm LGUI D &hm LSHFT F &kp G   &kp H &hm RSHFT J &hm RGUI K &hm RALT L &hm RCTRL SEMI &kp SQT
+                &kp TAB &hm LCTRL A &hm LALT S &hm LGUI D &hm LSHFT F &kp G   &td_h_rclk &hm RSHFT J &hm RGUI K &hm RALT L &hm RCTRL SEMI &kp SQT
                 &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
                                 &kp LGUI &td_nav_con &kp SPACE   &kp RET &td_sym_xls &kp RALT
             >;
@@ -164,8 +172,7 @@
         nav_config {
             layers = <NAV>;  // NAVレイヤーの番号に合わせて
             input-processors =
-                <&zip_scroll_scaler 1 2>,  // 分母を大きくするほど遅くなります
-                <&zip_tap_to_key RCLK>;
+                <&zip_scroll_scaler 1 2>;  // 分母を大きくするほど遅くなります
         };
     };
 };
