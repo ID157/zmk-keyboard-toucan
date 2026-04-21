@@ -165,15 +165,4 @@
             status = "reserved";
         };
     };
-
-    pointing_input_listener: pointing_input_listener {
-        compatible = "zmk,input-listener";
-        device = <&glidepoint>;  // Toucanの場合のtrackpadノード名
-
-        nav_config {
-            layers = <NAV>;  // NAVレイヤーの番号に合わせて
-            input-processors =
-                <&zip_scroll_scaler 1 2>;  // 分母を大きくするほど遅くなります
-        };
-    };
 };
