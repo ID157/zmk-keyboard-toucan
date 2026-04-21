@@ -88,8 +88,8 @@
 
         base {
             display-name = "BASE";
-            bindings = 
-                &kp LANG_ZENKAKUHANKAKU &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
+            bindings = <
+                &kp ZENKAKU_HANKAKU &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
                 &kp TAB &hm LCTRL A &hm LALT S &hm LGUI D &hm LSHFT F &kp G   &td_h_rclk &hm RSHFT J &hm RGUI K &hm RALT L &hm RCTRL SEMI &kp SQT
                 &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
                                 &kp LGUI &td_nav_con &kp SPACE   &kp RET &td_sym_xls &kp RALT
@@ -98,7 +98,7 @@
 
         nav {
             display-name = "NAV";
-            bindings = 
+            bindings = <
                 &kp LCTRL  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5    &kp N6   &kp N7   &kp N8  &kp N9    &kp N0  &kp BSPC
                 &kp TAB    &trans  &trans  &trans  &trans  &trans    &kp LEFT &kp DOWN &kp UP  &kp RIGHT &trans  &trans
                 &kp LSHFT  &trans  &trans  &trans  &trans  &trans    &trans   &trans   &trans  &trans    &trans  &trans
@@ -108,7 +108,7 @@
 
         sym {
             display-name = "SYM";
-            bindings = 
+            bindings = <
                 &kp LCTRL  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
                 &kp TAB    &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
                 &kp LSHFT  &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
@@ -118,7 +118,7 @@
 
         adj {
             display-name = "ADJ";
-            bindings = 
+            bindings = <
                 &kp LCTRL  &trans &kp F7 &kp F8 &kp F9 &kp F12   &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans &trans &kp BSPC
                 &kp TAB    &trans &kp F4 &kp F5 &kp F6 &kp F11   &trans       &trans      &trans       &trans &trans &trans
                 &kp LSHFT  &trans &kp F1 &kp F2 &kp F3 &kp F10   &trans       &trans      &trans       &trans &trans &trans
@@ -128,7 +128,7 @@
 
         con {
             display-name = "CON";
-            bindings = 
+            bindings = <
                 &to BASE  &con_bt0       &con_bt1 &con_bt2 &con_bt3 &con_bt4   &trans &trans &trans &trans &trans &bt BT_CLR_ALL
                 &to BASE  &trans         &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
                 &trans    &studio_unlock &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
@@ -138,7 +138,7 @@
 
         xls {
             display-name = "XLS";
-            bindings = 
+            bindings = <
                 &to BASE  &kp LG(Z)         &kp LG(LS(Z))    &kp LG(C)      &kp LG(V)      &kp LG(X)         &kp LG(B)  &kp LG(I)  &kp LG(U)  &kp LG(N1)        &kp F2   &kp BSPC
                 &kp TAB   &kp LC(D)          &kp LC(R)        &kp LC(HOME)   &kp LG(LS(L))  &kp LG(LS(T))     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT         &kp RET  &kp SQT
                 &kp LSHFT &kp LG(LS(EQUAL))  &kp LG(MINUS)   &trans         &trans         &trans            &trans     &trans     &kp COMMA  &kp DOT           &trans   &kp ESC
