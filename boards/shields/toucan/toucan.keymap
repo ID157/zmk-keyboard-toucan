@@ -30,13 +30,6 @@
             bindings = <&mo NAV>, <&to CON>;
         };
 
-        td_nav_con: tap_dance_nav_con {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&mo NAV>, <&to CON>;
-        };
-
         td_sym_xls: tap_dance_sym_xls {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
