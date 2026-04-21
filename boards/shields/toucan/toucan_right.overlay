@@ -85,7 +85,7 @@
         device = <&glidepoint>;
 
         nav_config {
-            layers = <NAV>;
+            layers = 1;
             input-processors =
                 <&zip_scroll_scaler 1 4>;
         };
