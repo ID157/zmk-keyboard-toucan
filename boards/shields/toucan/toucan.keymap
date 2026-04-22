@@ -102,7 +102,7 @@
             display-name = "BASE";
             bindings = <
                 &td_ime &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp TAB &hm LCTRL A &hm LALT S &hm LGUI D &hm LSHFT F &kp G   &td_h_rclk &hm RSHFT J &hm RGUI K &hm RALT L &hm RCTRL SEMI &kp SQT
+                &kp TAB &kp A &hm LCTRL S &hm LALT D &hm LSHFT F &kp G   &td_h_rclk &hm RSHFT J &hm RALT K &hm LCTRL L &kp SEMI &kp SQT
                 &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
                                 &kp LGUI &td_nav_con &kp SPACE   &kp RET &td_sym_xls &kp RALT
             >;
