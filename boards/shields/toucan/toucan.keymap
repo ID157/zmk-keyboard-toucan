@@ -50,7 +50,7 @@
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
-            bindings = <&kp LANG_ZENKAKUHANKAKU>, <&kp LANGUAGE_2>;
+            bindings = <&kp GRAVE>, <&kp LANGUAGE_2>;
         };
     };
 
@@ -79,6 +79,11 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&bt BT_SEL 4>, <&to BASE>;
+        };
+        con_bt_clr: con_bt_clr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_CLR>;
         };
     };
 
@@ -137,7 +142,7 @@
             display-name = "CON";
             bindings = <
                 &to BASE  &con_bt0       &con_bt1 &con_bt2 &con_bt3 &con_bt4   &trans &trans &trans &trans &trans &bt BT_CLR_ALL
-                &to BASE  &trans         &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
+                &to BASE  &con_bt_clr         &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
                 &trans    &studio_unlock &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
                                          &to BASE &trans   &trans   &trans     &trans &to BASE
             >;
