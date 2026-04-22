@@ -131,7 +131,7 @@
         adj {
             display-name = "ADJ";
             bindings = <    
-                &kp LCTRL  &kp F1 &kp F2 &kp F3 &kp F4 &kp F5   &kp F6 &kp F7  &kp F8 &F9 &F10 &kp BSPC
+                &kp LCTRL  &kp F1 &kp F2 &kp F3 &kp F4 &kp F5   &kp F6 &kp F7  &kp F8 &kp F9 &kp F10 &kp BSPC
                 &kp TAB    &kp F11 &kp F12 &trans  &trans &trans   &trans       &trans      &trans       &trans &trans &trans
                 &kp LSHFT  &trans &trans &trans &to CON &to XLS   &trans       &trans      &trans       &trans &trans &trans
                                    &kp LGUI &mo NAV &kp SPACE   &kp RET &mo SYM &kp RALT
@@ -153,7 +153,7 @@
             bindings = <
                 &to BASE  &kp LG(Z)         &kp LG(LS(Z))    &kp LG(C)      &kp LG(V)      &kp LG(X)         &kp LG(B)  &kp LG(I)  &kp LG(U)  &kp LG(N1)        &kp F2   &kp BSPC
                 &kp TAB   &kp LC(D)          &kp LC(R)        &kp LC(HOME)   &kp LG(LS(L))  &kp LG(LS(T))     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT         &kp RET  &kp SQT
-                &kp LSHFT &kp LG(LS(EQUAL))  &kp LG(MINUS)   &trans         &trans         &trans            &trans     &TAB     &kp COMMA  &kp DOT           &trans   &kp ESC
+                &kp LSHFT &kp LG(LS(EQUAL))  &kp LG(MINUS)   &trans         &trans         &trans            &trans     &kp TAB     &kp COMMA  &kp DOT           &trans   &kp ESC
                                               &kp LGUI &trans &kp SPACE   &kp RET &to BASE &kp RALT
             >;
         };

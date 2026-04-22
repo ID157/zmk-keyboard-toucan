@@ -112,7 +112,7 @@
             display-name = "NAV";
             bindings = <
                 &kp LCTRL  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5    &kp N6   &kp N7   &kp N8  &kp N9    &kp N0  &kp BSPC
-                &kp TAB    &trans  &trans  &trans  &trans  &trans    &kp LEFT &kp DOWN &kp UP  &kp RIGHT &trans  &kp TAB
+                &kp TAB    &trans  &trans  &trans  &trans  &trans    &kp LEFT &kp DOWN &kp UP  &kp RIGHT &trans  &trans
                 &kp LSHFT  &trans  &trans  &trans  &trans  &trans    &trans   &trans   &trans  &trans    &trans  &trans
                                    &kp LGUI &trans &kp SPACE   &kp RET &trans &kp RALT
             >;
@@ -153,7 +153,7 @@
             bindings = <
                 &to BASE  &kp LG(Z)         &kp LG(LS(Z))    &kp LG(C)      &kp LG(V)      &kp LG(X)         &kp LG(B)  &kp LG(I)  &kp LG(U)  &kp LG(N1)        &kp F2   &kp BSPC
                 &kp TAB   &kp LC(D)          &kp LC(R)        &kp LC(HOME)   &kp LG(LS(L))  &kp LG(LS(T))     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT         &kp RET  &kp SQT
-                &kp LSHFT &kp LG(LS(EQUAL))  &kp LG(MINUS)   &trans         &trans         &trans            &trans     &TAB     &kp COMMA  &kp DOT           &trans   &kp ESC
+                &kp LSHFT &kp LG(LS(EQUAL))  &kp LG(MINUS)   &trans         &trans         &trans            &trans     &kp TAB     &kp COMMA  &kp DOT           &trans   &kp ESC
                                               &kp LGUI &trans &kp SPACE   &kp RET &to BASE &kp RALT
             >;
         };
