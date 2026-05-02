@@ -24,20 +24,6 @@
             bindings = <&kp>, <&kp>;
         };
 
-        td_nav_con: tap_dance_nav_con {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&mo NAV>, <&to CON>;
-        };
-
-        td_sym_xls: tap_dance_sym_xls {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&mo SYM>, <&to XLS>;
-        };
-
         td_h_rclk: td_h_rclk {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
@@ -104,7 +90,7 @@
                 &td_ime &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
                 &kp TAB &kp A &hm LCTRL S &hm LALT D &hm LSHFT F &kp G   &td_h_rclk &hm RSHFT J &hm RALT K &hm LCTRL L &kp SEMI &kp SQT
                 &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                                &kp LGUI &td_nav_con &kp SPACE   &kp RET &td_sym_xls &kp RALT
+                                &kp LGUI &mo NAV &kp SPACE   &kp RET &mo SYM &kp RALT
             >;
         };
 
@@ -133,7 +119,7 @@
             bindings = <    
                 &kp LCTRL  &kp F1 &kp F2 &kp F3 &kp F4 &kp F5   &kp F6 &kp F7  &kp F8 &kp F9 &kp F10 &kp BSPC
                 &kp TAB    &kp F11 &kp F12 &trans  &trans &trans   &trans       &trans      &trans       &trans &trans &trans
-                &kp LSHFT  &trans &trans &trans &to CON &to XLS   &trans       &trans      &trans       &trans &trans &trans
+                &kp LSHFT  &trans &to XLS &to CON &trans &trans   &trans       &trans      &trans       &trans &trans &trans
                                    &kp LGUI &mo NAV &kp SPACE   &kp RET &mo SYM &kp RALT
             >;
         };
