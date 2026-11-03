@@ -152,7 +152,7 @@ manifest:
 
 - 上下が逆 → `glidepoint_split` に `zip_xy_transform Y_INVERT`（外周スクロールの向きは変わらない）
 - 滑り不要 → `inertial-disable`
-- 感度アップ → `zip_xy_scaler 5 8` → `5 4`（2倍）
+- 感度アップ → `zip_xy_scaler 5 8` → `5 4`（2倍）→ `17 16`（1.7倍）
 - ダブルタップを緩く → `tap-max-ms` 120→180, `tap-max-drift` 25→40, `tap-drag-window-ms` 200→300, `tap-drag-drift` 70→100
 - さらに、タップ中の指の揺れでカーソルが動き OS がダブルクリックと認識しない問題に対し、
   `toucan,input-processor-tap-guard`（`src/input_processor_tap_guard.c`）を追加:
