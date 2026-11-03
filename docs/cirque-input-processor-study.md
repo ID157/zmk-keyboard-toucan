@@ -140,6 +140,7 @@ manifest:
 1. ✅ ZMK main へ移行（nice_view_gem の LVGL 9 移植、geeksville → 本家ドライバ、relative モードのまま）。ビルド済み・**実機確認待ち**。
    - 本家ドライバはタップが既定で無効なので `primary-tap-enable` を付けた
    - 新しい XIAO ボード定義に合わせ、`&uicr { nfct-pins-as-gpios; }`（P0.09/P0.10 を列に使用）と `&xiao_spi` 無効化（spi0 とピン重複）を追加
-2. `data-mode = "absolute"` + `zip_cirque` を入れて、スクロール/タップ/右クリックを確認・調整。
+2. ✅ `data-mode = "absolute"` + `zip_cirque` を導入（badjeff `2276c49` に固定）。ビルド済み・**実機確認待ち**。
+   - カーソル速度は `toucan.dtsi` の `zip_xy_scaler 5 8` で調整（相対→絶対で単位が変わるため、レイヤー1/2のスクロール感を保つ比率で初期値を決めた）
 
 1 と 2 を分けることで、問題が出たときにどちらが原因か切り分けやすい。

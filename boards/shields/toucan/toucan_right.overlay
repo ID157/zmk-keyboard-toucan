@@ -1,6 +1,7 @@
 #include "toucan.dtsi"
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
+#include <input/processors/cirque.dtsi>
 
 &xiao_i2c {
     status = "disabled";
@@ -65,8 +66,8 @@
         sensitivity = "2x";
         invert-x;
 
-        // The upstream Zephyr driver has taps disabled by default; enable tap-to-click.
-        primary-tap-enable;
+        // Report absolute X/Y/Z; gestures (tap, edge scroll, ...) are handled by &zip_cirque below
+        data-mode = "absolute";
 
         // Optional: hardware sleep after 5 seconds with no touches. It wakes up on touch, but there is a
         // ~300ms delay.
@@ -74,9 +75,33 @@
     };
 };
 
-&glidepoint_split {
-    device = <&glidepoint>;
+/*
+ * Gesture processing runs here on the peripheral (timing sensitive, and only the
+ * resulting relative motion / wheel / buttons are sent to the central):
+ *   pad (absolute) --glidepoint_raw--> &zip_cirque --glidepoint_split--> central
+ * &zip_cirque always stops the raw events, so glidepoint_raw never sends anything.
+ *
+ *   - centre: cursor (flick to glide), tap = left click, tap + hold = drag
+ *   - rim:    tap = right click, rest a moment then circle = scroll wheel
+ */
+&zip_cirque {
+    edge-scroll-margin-h-pct = <25>;      // larger = wider rim / smaller cursor area
+    edge-scroll-margin-v-pct = <19>;
+    edge-scroll-gesture-delay-ms = <135>; // rest on the rim this long before scrolling starts
+    // inertial-disable;                  // uncomment to turn off the glide after a flick
+};
 
-    // Optional
-    // input-processors = <&zip_xy_transform (INPUT_TRANSFORM_XY_SWAP | INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+/ {
+    split_inputs {
+        glidepoint_raw: glidepoint_raw@1 {
+            compatible = "zmk,input-split";
+            reg = <1>;
+            device = <&glidepoint>;
+            input-processors = <&zip_cirque>;
+        };
+    };
+};
+
+&glidepoint_split {
+    device = <&zip_cirque>;
 };
