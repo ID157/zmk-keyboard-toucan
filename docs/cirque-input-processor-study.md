@@ -135,9 +135,11 @@ manifest:
 - リムに指を置いて少し止める → スクロールモード → 円を描くように回すとホイール（縦のみ。横は Shift 併用）
 - タップ直後にもう一度触れて保持 → ドラッグ
 
-## 段階的な進め方（提案）
+## 段階的な進め方
 
-1. ZMK main へ移行（nice_view_gem の LVGL 9 移植、geeksville → 本家ドライバ、relative モードのまま）して、今と同じ動作が出ることを確認。
+1. ✅ ZMK main へ移行（nice_view_gem の LVGL 9 移植、geeksville → 本家ドライバ、relative モードのまま）。ビルド済み・**実機確認待ち**。
+   - 本家ドライバはタップが既定で無効なので `primary-tap-enable` を付けた
+   - 新しい XIAO ボード定義に合わせ、`&uicr { nfct-pins-as-gpios; }`（P0.09/P0.10 を列に使用）と `&xiao_spi` 無効化（spi0 とピン重複）を追加
 2. `data-mode = "absolute"` + `zip_cirque` を入れて、スクロール/タップ/右クリックを確認・調整。
 
 1 と 2 を分けることで、問題が出たときにどちらが原因か切り分けやすい。
