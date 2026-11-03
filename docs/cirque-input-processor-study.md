@@ -44,9 +44,15 @@
 また ABS_X/Y/Z を毎フレーム送るより、変換後の REL だけ送る方が split の帯域も軽い。
 
 仕組み:
-- `glidepoint_raw`（右だけに置く input-split, reg 1）: 物理パッドのイベントを `&zip_cirque` に通す。
+- `glidepoint_feeder`（このリポジトリの `toucan,input-feeder`、`src/input_feeder.c`）: 物理パッドのイベントを `&zip_cirque` に通すだけのドライバ（HID 出力なし）。
   `zip_cirque` は常に `STOP` を返すので、生データはセントラルには送られない。
 - `glidepoint_split`（reg 0）: デバイスを `&zip_cirque`（仮想デバイス）にし、変換後の REL_X/Y・REL_WHEEL・ボタンだけを送る。
+
+> **注意（実機で発覚・BabbleSim で再現済み）:** 最初は2つ目の `zmk,input-split`（reg 1）で生データを
+> プロセッサに通していたが、ペリフェラルに split input が2つあると、ZMK セントラルの GATT 探索が
+> 1回の Read By Type 応答に入った2つ目の CCC を CPF と誤認し、reg を不正値（16）で登録してしまう。
+> 結果、トラックパッドのイベントが全て捨てられる。`zmk,input-listener` はペリフェラルではビルドされないため、
+> GATT 特性を増やさない小さな feeder ドライバで解決した。
 
 ### config/west.yml
 
@@ -104,13 +110,10 @@ manifest:
 };
 
 / {
-    split_inputs {
-        glidepoint_raw: glidepoint_raw@1 {
-            compatible = "zmk,input-split";
-            reg = <1>;
-            device = <&glidepoint>;
-            input-processors = <&zip_cirque>;
-        };
+    glidepoint_feeder: glidepoint_feeder {
+        compatible = "toucan,input-feeder";   /* src/input_feeder.c */
+        device = <&glidepoint>;
+        input-processors = <&zip_cirque>;
     };
 };
 

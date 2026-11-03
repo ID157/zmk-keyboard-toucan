@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Runs every event from an input device through a chain of input processors and
+  does nothing else (no HID reports). Useful on a split peripheral, where
+  zmk,input-listener is not available, to drive a processor that re-emits its
+  results on its own virtual device (e.g. &zip_cirque), which a zmk,input-split
+  then forwards to the central.
+
+  Unlike a second zmk,input-split, this adds no GATT characteristic, so the
+  peripheral still exposes a single split input to the central.
+
+compatible: "toucan,input-feeder"
+
+properties:
+  device:
+    type: phandle
+    required: true
+    description: The input device whose events are fed to the processors.
+  input-processors:
+    type: phandle-array
+    required: true

@@ -78,8 +78,11 @@
 /*
  * Gesture processing runs here on the peripheral (timing sensitive, and only the
  * resulting relative motion / wheel / buttons are sent to the central):
- *   pad (absolute) --glidepoint_raw--> &zip_cirque --glidepoint_split--> central
- * &zip_cirque always stops the raw events, so glidepoint_raw never sends anything.
+ *   pad (absolute) --glidepoint_feeder--> &zip_cirque --glidepoint_split--> central
+ *
+ * The feeder (toucan,input-feeder, src/input_feeder.c in this repo) is used instead of a
+ * second zmk,input-split: two split inputs on one peripheral make the central's GATT
+ * discovery read a bogus reg and drop every trackpad event.
  *
  *   - centre: cursor (flick to glide), tap = left click, tap + hold = drag
  *   - rim:    tap = right click, rest a moment then circle = scroll wheel
@@ -92,13 +95,10 @@
 };
 
 / {
-    split_inputs {
-        glidepoint_raw: glidepoint_raw@1 {
-            compatible = "zmk,input-split";
-            reg = <1>;
-            device = <&glidepoint>;
-            input-processors = <&zip_cirque>;
-        };
+    glidepoint_feeder: glidepoint_feeder {
+        compatible = "toucan,input-feeder";
+        device = <&glidepoint>;
+        input-processors = <&zip_cirque>;
     };
 };
 

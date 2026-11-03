@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT
+
+config TOUCAN_INPUT_FEEDER
+    bool "Feed an input device's events through input processors (no HID output)"
+    default y
+    depends on ZMK_POINTING
+    depends on DT_HAS_TOUCAN_INPUT_FEEDER_ENABLED
