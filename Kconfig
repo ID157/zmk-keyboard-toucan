@@ -5,3 +5,9 @@ config TOUCAN_INPUT_FEEDER
     default y
     depends on ZMK_POINTING
     depends on DT_HAS_TOUCAN_INPUT_FEEDER_ENABLED
+
+config TOUCAN_INPUT_PROCESSOR_TAP_GUARD
+    bool "Tap guard input processor"
+    default y
+    depends on ZMK_POINTING
+    depends on DT_HAS_TOUCAN_INPUT_PROCESSOR_TAP_GUARD_ENABLED

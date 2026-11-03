@@ -91,10 +91,26 @@
     edge-scroll-margin-h-pct = <25>;      // larger = wider rim / smaller cursor area
     edge-scroll-margin-v-pct = <19>;
     edge-scroll-gesture-delay-ms = <135>; // rest on the rim this long before scrolling starts
-    // inertial-disable;                  // uncomment to turn off the glide after a flick
+
+    inertial-disable;                     // no glide after a flick
+
+    // Looser tap / double-tap detection (module defaults in brackets)
+    tap-max-ms = <180>;                   // max finger-down time for a tap [120]
+    tap-max-drift = <40>;                 // max movement during a tap, pad counts [25]
+    tap-drag-window-ms = <300>;           // max gap between the two taps of a double tap [200]
+    tap-drag-drift = <100>;               // max distance between the two taps [70]
 };
 
 / {
+    // Drops the cursor wobble of a tap so double taps land on the same spot
+    // (src/input_processor_tap_guard.c). Raise threshold if taps still move the cursor.
+    tap_guard: tap_guard {
+        compatible = "toucan,input-processor-tap-guard";
+        #input-processor-cells = <0>;
+        threshold = <32>;   // pad counts (~0.6 mm)
+        idle-ms = <80>;
+    };
+
     glidepoint_feeder: glidepoint_feeder {
         compatible = "toucan,input-feeder";
         device = <&glidepoint>;
@@ -104,4 +120,6 @@
 
 &glidepoint_split {
     device = <&zip_cirque>;
+    // The pad's absolute Y axis runs opposite to the relative-mode deltas used before
+    input-processors = <&tap_guard &zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;
 };

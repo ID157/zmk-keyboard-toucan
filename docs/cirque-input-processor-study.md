@@ -147,3 +147,15 @@ manifest:
    - カーソル速度は `toucan.dtsi` の `zip_xy_scaler 5 8` で調整（相対→絶対で単位が変わるため、レイヤー1/2のスクロール感を保つ比率で初期値を決めた）
 
 1 と 2 を分けることで、問題が出たときにどちらが原因か切り分けやすい。
+
+## 実機フィードバック後の調整（2026-11-03）
+
+- 上下が逆 → `glidepoint_split` に `zip_xy_transform Y_INVERT`（外周スクロールの向きは変わらない）
+- 滑り不要 → `inertial-disable`
+- 感度アップ → `zip_xy_scaler 5 8` → `5 4`（2倍）
+- ダブルタップを緩く → `tap-max-ms` 120→180, `tap-max-drift` 25→40, `tap-drag-window-ms` 200→300, `tap-drag-drift` 70→100
+- さらに、タップ中の指の揺れでカーソルが動き OS がダブルクリックと認識しない問題に対し、
+  `toucan,input-processor-tap-guard`（`src/input_processor_tap_guard.c`）を追加:
+  動き始めの合計移動量が `threshold`（32カウント≒0.6mm）未満なら捨て、超えたら溜めた分も含めて全部流す。
+  BabbleSim で「タップ中のカーソル移動 0、スライドは欠損なし」を確認。
+

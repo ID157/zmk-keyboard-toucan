@@ -119,7 +119,7 @@
         device = <&glidepoint_split>;
         // Cursor speed. Motion now comes from absolute pad coordinates via &zip_cirque on the
         // right half; raise/lower the first number to speed up/slow down.
-        input-processors = <&zip_xy_scaler 5 8>;
+        input-processors = <&zip_xy_scaler 5 4>;
         scroller {
             layers = <1 2>;
             input-processors = <

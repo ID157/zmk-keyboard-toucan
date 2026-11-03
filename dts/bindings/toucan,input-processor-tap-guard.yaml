@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Suppresses the small cursor jitter of a tap so that taps (and double taps) land
+  on the same pixel. When relative motion starts after a pause, it is held back
+  until its accumulated distance reaches `threshold`; if the movement never gets
+  that far (a tap), it is dropped. Once the threshold is crossed, the held-back
+  motion is released in full and further motion passes through untouched until
+  the next pause.
+
+compatible: "toucan,input-processor-tap-guard"
+
+include: ip_zero_param.yaml
+
+properties:
+  threshold:
+    type: int
+    default: 24
+    description: Distance (|x| + |y|, in input units) motion must exceed to pass.
+  idle-ms:
+    type: int
+    default: 80
+    description: A gap without motion this long starts a new guarded movement.
