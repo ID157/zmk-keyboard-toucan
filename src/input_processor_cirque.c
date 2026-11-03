@@ -6,8 +6,13 @@
 
 /*
  * Vendored from https://github.com/badjeff/zmk-input-processor-cirque @ 2276c49 (MIT).
- * Local change: edge-region-start-deg / edge-region-end-deg restrict the rim
- * (edge scroll + secondary tap) to an angular segment of the ring.
+ * Local changes:
+ *  - edge-region-start-deg / edge-region-end-deg restrict the rim (edge scroll +
+ *    secondary tap) to an angular segment of the ring.
+ *  - Cursor first: a rim touch that moves before the scroll hold delay becomes a
+ *    cursor gesture right away (upstream ignores it until it reaches the centre),
+ *    and a scroll gesture that enters the centre region before emitting any wheel
+ *    tick turns into a cursor gesture (rest-then-slide no longer gets stuck).
  */
 #define DT_DRV_COMPAT zmk_input_processor_cirque
 
@@ -179,6 +184,7 @@ struct zip_cirque_data {
     int32_t accx, accy;  // accumulated sub-count glide distance (to fixed point)
     uint16_t tick_ms;    // glide tick (derived from history at glide launch)
     int64_t glide_start_ts;
+    bool scroll_ticked;  // a wheel tick was emitted in the current scroll gesture
 };
 
 static float cirque_ellipse_dist(const struct zip_cirque_config *config,
@@ -578,6 +584,7 @@ static int zip_handle_event(const struct device *dev, struct input_event *event,
                 data->gesture_start.x = data->sx;
                 data->gesture_start.y = data->sy;
                 data->hist_head = data->hist_len = 0;
+                data->scroll_ticked = false;
             }
         }
 
@@ -638,25 +645,25 @@ static int zip_handle_event(const struct device *dev, struct input_event *event,
                 cirque_feedback_pulse(data, CIRQUE_PULSE_SCROLL_START);
             } else if (gx >= attr->edge_scroll_gesture_delay_drift ||
                        gy >= attr->edge_scroll_gesture_delay_drift) {
-                /* finger moved during the hold */
-                LOG_DBG("HOLD BROKEN on %lld ms", now - data->gesture_start.ts);
-                if (config->has_feedback_edge_scroll_start_gpio &&
-                    attr->feedback_edge_scroll_start_enable) {
-                    /* the scroll-start haptic can announce scroll onset at
-                     * the right moment: drop the attempt, hold again
-                     * from rest */
-                    data->gesture_mode = CIRQUE_GESTURE_NONE;
-                }
-                else if (cirque_ellipse_dist(config, attr, data->sx, data->sy) <= 1.0f) {
-                    /* no scroll-start cue, but the finger left the rim into
-                     * the center region: the scroll attempt ends immediately */
-                    data->gesture_mode = CIRQUE_GESTURE_NONE;
-                }
-                /* otherwise: stay in PENDING, the attempt is not
-                 * abandoned and the gesture stays undetermined */
+                /* finger moved during the hold: it is a cursor gesture, not a
+                 * scroll attempt; continue from the current position */
+                LOG_DBG("HOLD BROKEN on %lld ms -> CURSOR", now - data->gesture_start.ts);
+                data->gesture_mode = CIRQUE_GESTURE_CURSOR;
             }
 
             /* keep positions tracked while holding: no wheel jump on release */
+            data->hs = -1;
+            data->gesture_last =
+                (struct zip_cirque_sample){.x = data->sx, .y = data->sy, .ts = now};
+            k_work_reschedule(&data->session_work, K_MSEC(attr->session_end_idle_ms));
+        }
+        else if (data->gesture_mode == CIRQUE_GESTURE_SCROLL && !data->scroll_ticked &&
+                 cirque_ellipse_dist(config, attr, data->sx, data->sy) <= 1.0f) {
+            /* scroll mode entered by resting on the rim, but the finger then
+             * slid into the centre without turning the wheel: it was a cursor
+             * move after all; continue from the current position */
+            LOG_DBG("SCROLL -> CURSOR (entered centre before any tick)");
+            data->gesture_mode = CIRQUE_GESTURE_CURSOR;
             data->hs = -1;
             data->gesture_last =
                 (struct zip_cirque_sample){.x = data->sx, .y = data->sy, .ts = now};
@@ -705,6 +712,9 @@ static int zip_handle_event(const struct device *dev, struct input_event *event,
             }
 
             data->dv += v;
+            if (v != 0) {
+                data->scroll_ticked = true;
+            }
             data->gesture_last =
                 (struct zip_cirque_sample){.x = data->sx, .y = data->sy, .ts = now};
             k_work_reschedule(&data->session_work, K_MSEC(attr->session_end_idle_ms));
