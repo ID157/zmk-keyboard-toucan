@@ -10,6 +10,8 @@ manifest:
       url-base: https://github.com/caksoylar
     - name: geeksville
       url-base: https://github.com/geeksville
+    - name: kot149
+      url-base: https://github.com/kot149
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -20,5 +22,10 @@ manifest:
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: v0.3
+    # 日本語(JIS)配列の OS 向けにキーコードを変換するモジュール
+    # https://github.com/kot149/zmk-layout-shift (v2 ブランチの commit に固定)
+    - name: zmk-layout-shift
+      remote: kot149
+      revision: c242c13c9c5a6100b3980b8c725c734c368670de
   self:
     path: config

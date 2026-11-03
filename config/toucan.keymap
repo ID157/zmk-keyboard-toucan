@@ -4,6 +4,8 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/pointing.h>
+// &kp を日本語(JIS)配列対応版に置き換える (必ず behaviors.dtsi より後に include する)
+#include <layout_shift_kp_override.dtsi>
 
 #define BASE 0
 #define NAV  1
@@ -11,6 +13,10 @@
 #define ADJ  3
 #define CON  4
 #define XLS  5
+
+// US -> JIS 変換の ON/OFF 対象 (CON レイヤーの &tog_ls_on / &tog_ls_off で切り替え)
+&tog_ls_on { layout-maps = <&layout_shift_map_us_to_jis>; };
+&tog_ls_off { layout-maps = <&layout_shift_map_us_to_jis>; };
 
 / {
     behaviors {
@@ -113,7 +119,7 @@
             display-name = "CON";
             bindings = <
                 &to BASE  &con_bt0       &con_bt1 &con_bt2 &con_bt3 &con_bt4   &trans &trans &trans &trans &trans &bt BT_CLR_ALL
-                &to BASE  &con_bt_clr         &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
+                &to BASE  &con_bt_clr         &trans   &trans   &trans   &trans     &tog_ls_on &tog_ls_off &trans &trans &trans &trans
                 &trans    &studio_unlock &trans   &trans   &trans   &trans     &trans &trans &trans &trans &trans &trans
                                          &trans &trans   &trans   &trans &trans &trans
             >;
