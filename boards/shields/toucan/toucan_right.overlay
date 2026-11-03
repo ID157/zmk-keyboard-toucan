@@ -85,11 +85,16 @@
  * discovery read a bogus reg and drop every trackpad event.
  *
  *   - centre: cursor (flick to glide), tap = left click, tap + hold = drag
- *   - rim:    tap = right click, rest a moment then circle = scroll wheel
+ *   - bottom-right rim: tap = right click, rest a moment then circle = scroll wheel
  */
 &zip_cirque {
-    edge-scroll-margin-h-pct = <25>;      // larger = wider rim / smaller cursor area
-    edge-scroll-margin-v-pct = <19>;
+    // Rim (right click / scroll start) only in the physical bottom-right quarter; everywhere
+    // else the cursor area reaches the edge of the pad. Pad Y grows upwards physically, so
+    // bottom-right = +X / -Y = 270..360 deg. (bottom-left 180..270, top-right 0..90, top-left 90..180)
+    edge-region-start-deg = <270>;
+    edge-region-end-deg = <360>;
+    edge-scroll-margin-h-pct = <35>;      // larger = wider rim (only matters inside the segment)
+    edge-scroll-margin-v-pct = <30>;
     edge-scroll-gesture-delay-ms = <135>; // rest on the rim this long before scrolling starts
 
     inertial-disable;                     // no glide after a flick

@@ -1,0 +1,301 @@
+# Copyright (c) 2025, The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+description: |
+  Input Processor for cirque pinnacle touch pad.
+  Vendored from https://github.com/badjeff/zmk-input-processor-cirque @ 2276c49 (MIT),
+  with edge-region-start-deg / edge-region-end-deg added.
+
+compatible: "zmk,input-processor-cirque"
+
+include: ip_zero_param.yaml
+
+properties:
+
+  abs-center-x:
+    type: int
+    default: 1024
+    description: >-
+      Center of the touchpad coordinates, x-axis.
+      Range [0..2047] (left to right).
+
+  abs-center-y:
+    type: int
+    default: 768
+    description: >-
+      Center of the touchpad coordinates, y-axis.
+      Range [0..1535] (top to bottom).
+
+  primary-tap-disable:
+    type: boolean
+    description: >-
+      Primary tap detection is enabled by default.
+      Set this property to disable the feature.
+
+  secondary-tap-disable:
+    type: boolean
+    description: >-
+      Secondary tap detection is enabled by default.
+      Set this property to disable the feature.
+      Tap on the edge-scroll ring as mouse right click.
+      Depends on primary-tap.
+
+  tap-max-ms:
+    type: int
+    default: 120
+    description: >-
+      Max gesture duration for tap detection, milliseconds.
+      A gesture shorter than this can click instead of dragging or coasting.
+
+  tap-max-drift:
+    type: int
+    default: 25
+    description: >-
+      Max gesture movement per axis for tap detection, counts.
+      A gesture that drifted less than this per axis can click instead of
+      dragging or coasting.
+
+  tap-drag-disable:
+    type: boolean
+    description: >-
+      Tap-drag gesture is enabled by default: a fast tap followed by a
+      swift re-touch that holds on the same spot engages a drag - the
+      mouse button presses once the hold window elapses. A quick lift
+      instead completes the next (double/triple) click.
+      Set this property to disable the feature.
+
+  tap-drag-window-ms:
+    type: int
+    default: 200
+    description: >-
+      Max time between an armed tap and its re-touch, milliseconds.
+      Retouches after this window are plain touches again.
+
+  tap-drag-drift:
+    type: int
+    default: 70
+    description: >-
+      Max per-axis offset between an armed tap position and its
+      re-touch, counts. The re-touch must also stay within this offset
+      for the hold window to switch into a drag.
+
+  tap-drag-hold-start-ms:
+    type: int
+    default: 200
+    description: >-
+      Hold window after the re-touch, milliseconds. Staying on the
+      armed spot this long presses the mouse button, switches the touch
+      into a drag and fires the haptic pulse; lifting earlier stays a
+      plain click (should be recognised as double click from host).
+
+  edge-scroll-margin-h-pct:
+    type: int
+    default: 25
+    description: >-
+      Horizontal margin of the center (cursor) region, percent of the pad
+      half-width. Touches inside the ellipse fall in the center (cursor)
+      region; touches outside fall into the edge-scroll ring. Larger values
+      shrink the cursor region.
+
+  edge-scroll-margin-v-pct:
+    type: int
+    default: 19
+    description: >-
+      Vertical margin of the center (cursor) region, percent of the pad
+      half-height. Similar to edge-scroll-margin-h-pct, but in vertical.
+
+  edge-region-start-deg:
+    type: int
+    default: 0
+    description: >-
+      Start angle (degrees, 0..360) of the part of the ring that acts as the
+      edge-scroll / secondary-tap rim. Angles are measured in pad coordinates
+      from the +X axis towards +Y, after normalising both axes to the pad
+      radius. Outside [start, end) the whole pad, up to its edge, is the
+      centre (cursor) region. The range wraps when start > end.
+
+  edge-region-end-deg:
+    type: int
+    default: 360
+    description: >-
+      End angle (degrees, 0..360) of the rim segment; see edge-region-start-deg.
+      The default 0..360 keeps the full ring.
+
+  edge-scroll-segment:
+    type: int
+    default: 64
+    description: >-
+      Number of angular segments the edge-scroll ring is split into. Crossing
+      a segment boundary emits one wheel tick. Values < 2 fall back to a
+      simple swipe up/down heuristic.
+
+  edge-scroll-gesture-delay-ms:
+    type: int
+    default: 135
+    description: >-
+      Hold-on-edge delay before an edge touch qualifies as a scroll gesture,
+      milliseconds. The rim touch must stay within
+      edge-scroll-gesture-delay-drift for this long before wheel output
+      starts and the haptic pulse fires. 0 = no hold, scroll starts
+      immediately.
+
+  edge-scroll-gesture-delay-drift:
+    type: int
+    default: 20
+    description: >-
+      Max movement per axis during the hold-on-edge window, counts.
+      A touch that drifts beyond the threshold breaks the hold and stays
+      silent until it comes to rest and holds again.
+
+  session-end-idle-ms:
+    type: int
+    default: 20
+    description: >-
+      Idle time after the last touch frame before a gesture session is
+      considered ended: runs tap detection and, for cursor sessions, starts
+      the inertial glide.
+
+  sync-rel-xy-ms:
+    type: int
+    default: 1
+    description: >-
+      Rate limit for emitting accumulated REL_X/REL_Y cursor deltas,
+      milliseconds between reports.
+
+  sync-rel-v-ms:
+    type: int
+    default: 1
+    description: >-
+      Rate limit for emitting accumulated REL_WHEEL scroll ticks,
+      milliseconds between reports.
+
+  history-len:
+    type: int
+    default: 6
+    description: >-
+      Number of recent touch samples kept in the history ring. Both the
+      inertial glide tick and the launch velocity are derived from this
+      window.
+
+  lift-filter-pct:
+    type: int
+    default: 45
+    description: >-
+      Detects finger-lift trailing frames: samples whose Z fell this
+      percentage below the session Z average (recalculated on the running
+      sample history) are swallowed before movement or gesture detection;
+      a rising Z ramp always passes. 0 = disabled.
+
+  inertial-disable:
+    type: boolean
+    description: >-
+      Inertial cursor motion (flick then coast) is enabled by default.
+      Set this property to disable the feature.
+
+  inertial-decay-pct:
+    type: int
+    default: 93
+    description: >-
+      Glide velocity decay rate per tick, percent.
+      Percentage of velocity to pass to next tick.
+
+  inertial-tick-ms:
+    type: int
+    default: 0
+    description: >-
+      Fixed glide tick override, milliseconds. 0 = derive the tick from the
+      sample history and clamp it with inertial-tick-min-ms and
+      inertial-tick-max-ms.
+
+  inertial-tick-min-ms:
+    type: int
+    default: 4
+    description: >-
+      Lower clamp bound for the glide tick derived from the sample history,
+      milliseconds.
+
+  inertial-tick-max-ms:
+    type: int
+    default: 40
+    description: >-
+      Upper clamp bound for the glide tick derived from the sample history,
+      milliseconds.
+
+  inertial-glide-max-ms:
+    type: int
+    default: 2950
+    description: >-
+      Fail-safe cap on a single inertial glide, milliseconds, so a glide can
+      never run forever.
+
+  inertial-velocity-cap:
+    type: int
+    default: 16384
+    description: >-
+      Sanity cap on the launch velocity of an inertial glide, counts/s.
+
+  inertial-start-velocity:
+    type: int
+    default: 500
+    description: >-
+      Minimum release velocity to start coasting, counts/s.
+      0 = coast on every non-tap release.
+
+  feedback-tap-drag-gpios:
+    type: phandle-array
+    description: |
+      Haptic feedback GPIO pin for the mouse button press when a tap-drag
+      engages. Pin is driven high while the pulse plays.
+
+  feedback-tap-drag-ms:
+    type: int
+    default: 5
+    description: >-
+      Duration of the tap-drag haptic feedback pulse.
+      Pulse plays on feedback-tap-drag-gpios.
+
+  feedback-edge-scroll-start-gpios:
+    type: phandle-array
+    description: |
+      Haptic feedback GPIO pin for the start of edge-scroll.
+      Pin is driven high while the scroll-start pulse plays.
+
+  feedback-edge-scroll-start-ms:
+    type: int
+    default: 5
+    description: >-
+      Duration of haptic feedback on scroll gesture recognised.
+      Pulse plays on feedback-edge-scroll-start-gpios.
+
+  feedback-edge-scroll-trigger-gpios:
+    type: phandle-array
+    description: |
+      Haptic feedback GPIO pin for edge-scroll wheel output.
+      Pin is driven high while the segment-crossing pulse plays.
+
+  feedback-edge-scroll-trigger-ms:
+    type: int
+    default: 2
+    description: >-
+      Duration of haptic feedback on dragging across edge-scroll segments.
+      Pulse plays on feedback-edge-scroll-trigger-gpios.
+
+  feedback-glide-gpios:
+    type: phandle-array
+    description: |
+      Haptic feedback GPIO pin for cursor output.
+      Pin is driven high while the cursor pulse plays.
+
+  feedback-glide-ms:
+    type: int
+    default: 2
+    description: >-
+      Duration of haptic feedback on dragging across cursor segments.
+      Pulse plays on feedback-glide-gpios.
+
+  feedback-glide-interval-ms:
+    type: int
+    default: 25
+    description: >-
+      Min interval between two cursor haptic feedback pulses, milliseconds.
+      0 = no throttling.
