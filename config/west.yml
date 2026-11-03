@@ -1,24 +1,16 @@
 manifest:
-  defaults:
-    revision: v0.3
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: petejohanson
-      url-base: https://github.com/petejohanson/
     - name: caksoylar
       url-base: https://github.com/caksoylar
-    - name: geeksville
-      url-base: https://github.com/geeksville
   projects:
     - name: zmk
       remote: zmkfirmware
+      revision: main
       import: app/west.yml
-    - name: cirque-input-module
-      remote: geeksville
-      revision: toucan
     - name: zmk-rgbled-widget
       remote: caksoylar
-      revision: v0.3
+      revision: main
   self:
     path: config

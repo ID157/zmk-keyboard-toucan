@@ -3,6 +3,16 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <physical_layouts.dtsi>
 
+// P0.09 / P0.10 (NFC pins) are used as matrix columns
+&uicr {
+    nfct-pins-as-gpios;
+};
+
+// The XIAO board enables spi2 on D8-D10 (P1.13-P1.15), which this shield drives via spi0
+&xiao_spi {
+    status = "disabled";
+};
+
 
 / {
     chosen {

@@ -61,14 +61,16 @@
         reg = <0>;
         spi-max-frequency = <1000000>;
         status = "okay";
-        dr-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH)>;
+        data-ready-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH)>;
         sensitivity = "2x";
-        x-invert;
+        invert-x;
 
-        // Optional: turning this on enables very aggressive power saving, after 5 seconds with no touches
-        // the trackpad will go to sleep.  It wakes up on touch, but there is a ~300ms delay.  Most users will find
-        // the standard behavior of 'put to sleep when zmk enters idle state (30 seconds without a keypress) feels better.
-	    //sleep;
+        // The upstream Zephyr driver has taps disabled by default; enable tap-to-click.
+        primary-tap-enable;
+
+        // Optional: hardware sleep after 5 seconds with no touches. It wakes up on touch, but there is a
+        // ~300ms delay.
+        //sleep-mode-enable;
     };
 };
 
@@ -77,17 +79,4 @@
 
     // Optional
     // input-processors = <&zip_xy_transform (INPUT_TRANSFORM_XY_SWAP | INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
-};
-
-/ {
-    pointing_input_listener: pointing_input_listener {
-        compatible = "zmk,input-listener";
-        device = <&glidepoint>;
-
-        nav_config {
-            layers = <1>;
-            input-processors =
-                <&zip_scroll_scaler 2 3>;
-        };
-    };
 };

@@ -6,9 +6,10 @@
 #define SCREEN_WIDTH 144
 #define SCREEN_HEIGHT 168
 
-#define BUFFER_SIZE 168
-#define BUFFER_OFFSET_MIDDLE 0
-#define BUFFER_OFFSET_BOTTOM 0
+#define CANVAS_COLOR_FORMAT LV_COLOR_FORMAT_L8
+#define CANVAS_BUF_SIZE                                                                            \
+    LV_CANVAS_BUF_SIZE(SCREEN_WIDTH, SCREEN_HEIGHT, LV_COLOR_FORMAT_GET_BPP(CANVAS_COLOR_FORMAT),   \
+                       LV_DRAW_BUF_STRIDE_ALIGN)
 
 #define LVGL_BACKGROUND lv_color_black()
 #define LVGL_FOREGROUND lv_color_white()
@@ -36,3 +37,9 @@ void init_rect_dsc(lv_draw_rect_dsc_t *rect_dsc, lv_color_t bg_color);
 void init_line_dsc(lv_draw_line_dsc_t *line_dsc, lv_color_t color, uint8_t width);
 void init_label_dsc(lv_draw_label_dsc_t *label_dsc, lv_color_t color, const lv_font_t *font,
                     lv_text_align_t align);
+void canvas_draw_rect(lv_obj_t *canvas, int32_t x, int32_t y, int32_t w, int32_t h,
+                      lv_draw_rect_dsc_t *rect_dsc);
+void canvas_draw_text(lv_obj_t *canvas, int32_t x, int32_t y, int32_t max_w,
+                      lv_draw_label_dsc_t *label_dsc, const char *text);
+void canvas_draw_img(lv_obj_t *canvas, int32_t x, int32_t y, const lv_image_dsc_t *src,
+                     lv_draw_image_dsc_t *img_dsc);
